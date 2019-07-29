@@ -1,19 +1,15 @@
-.chart div {
-  display: block;
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
+text {
+  font: bold 48px monospace;
 }
 
-.chart span {
-  display: block;
-  font: 10px sans-serif;
-  background-color: yellowgreen;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
+.enter {
+  fill: green;
+}
+
+.update {
+  fill: #333;
+}
+
+.exit {
+  fill: #800000;
 }

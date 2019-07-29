@@ -1,42 +1,42 @@
-const RADIUS = 25;
-const circleData = [{ x: 2 * RADIUS, y: RADIUS }, { x: 5 * RADIUS, y: RADIUS }];
+var alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
-d3.select('body').append('svg');
+var svg = d3.select('svg'),
+  width = +svg.attr('width'),
+  height = +svg.attr('height'),
+  g = svg.append('g').attr('transform', 'translate(32,' + height / 2 + ')');
 
-const update = () => {
-  const circle = d3
-    .select('svg')
-    .selectAll('circle')
-    .data(circleData);
+function update(data) {
+  g.transition().duration(750);
+  var text = g.selectAll('text').data(data, d => d);
 
-  circle
-    .exit()
-    .transition()
-    .attr('r', 0)
-    .remove();
+  text.attr('class', 'update');
 
-  const circleCreate = circle.enter().append('circle');
-
-  circleCreate
+  text
+    .enter()
+    .append('text')
+    .attr('class', 'enter')
     // @ts-ignore
-    .merge(circle)
-    .attr('cx', d => d.x)
-    .attr('cy', d => d.y)
-    .attr('fill', (d, i) => (i % 2 ? 'aquamarine' : 'deepskyblue'));
-
-  circleCreate
-    .attr('r', 0)
+    .merge(text)
+    .text(d => d)
     .transition()
-    .attr('r', RADIUS);
-};
+    .attr('x', (d, i) => i * 32);
 
-update();
+  text
+    .exit()
+    .attr('class', 'exit')
+    .transition()
+    .attr('dy', 50)
+    .style('opacity', 0)
+    .remove();
+}
 
-const id = setInterval(() => {
-  circleData.pop();
-  update();
+update(alphabet);
 
-  if (circleData.length === 0) {
-    clearInterval(id);
-  }
+d3.interval(function() {
+  update(
+    d3
+      .shuffle(alphabet.split(''))
+      .slice(0, Math.floor(Math.random() * 26))
+      .sort()
+  );
 }, 1500);
