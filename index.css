@@ -1,15 +1,8 @@
-text {
-  font: bold 48px monospace;
-}
-
-.enter {
-  fill: green;
-}
-
-.update {
-  fill: #333;
-}
-
-.exit {
-  fill: #800000;
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
 }
