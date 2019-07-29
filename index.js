@@ -6,31 +6,41 @@ var svg = d3.select('svg'),
   g = svg.append('g').attr('transform', 'translate(32,' + height / 2 + ')');
 
 function update(data) {
-  g.transition().duration(750);
-  var text = g.selectAll('text').data(data, d => d);
+  const t = g.transition().duration(750);
+  g.selectAll('text')
+    .data(data, d => d)
+    .join(
+      enter =>
+        enter
+          .append('text')
+          .attr('class', 'enter')
+          .attr('x', (d, i) => i * 32)
+          .attr('dy', -50)
+          .attr('opacity', 0)
+          .text(d => d)
+          .call(enter =>
+            enter
+              .transition(t)
+              .attr('dy', 0)
+              .attr('opacity', 1)
+          ),
+      update =>
+        update
+          .attr('class', 'update')
+          .call(enter => enter.transition(t).attr('x', (d, i) => i * 32)),
 
-  text.attr('class', 'update');
-
-  text
-    .enter()
-    .append('text')
-    .attr('class', 'enter')
-    // @ts-ignore
-    .merge(text)
-    .text(d => d)
-    .transition()
-    .attr('x', (d, i) => i * 32);
-
-  text
-    .exit()
-    .attr('class', 'exit')
-    .transition()
-    .attr('dy', 50)
-    .style('opacity', 0)
-    .remove();
+      exit =>
+        exit.attr('class', 'exit').call(exit =>
+          exit
+            .transition()
+            .attr('dy', 50)
+            .style('opacity', 0)
+            .remove()
+        )
+    );
 }
 
-update(alphabet);
+update(alphabet.split(''));
 
 d3.interval(function() {
   update(
