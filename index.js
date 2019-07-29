@@ -11,3 +11,18 @@ d3.select('body')
   )
   .style('width', d => `${d * 10}px`)
   .text(d => d);
+
+const RADIUS = 25;
+const circleData = [{ x: 2 * RADIUS, y: RADIUS }, { x: 5 * RADIUS, y: RADIUS }];
+
+d3.select('body')
+  .append('svg')
+  .attr('class', 'circle')
+  .selectAll('circle')
+  .data(circleData)
+  .enter()
+  .append('circle')
+  .attr('cx', d => d.x)
+  .attr('cy', d => d.y)
+  .attr('fill', (d, i) => (i % 2 ? 'aquamarine' : 'deepskyblue'))
+  .attr('r', RADIUS);
